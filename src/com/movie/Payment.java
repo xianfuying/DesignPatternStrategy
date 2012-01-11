@@ -16,4 +16,8 @@ public class Payment {
         return "Method: " + method +
                 "\n" + "Total price: " + price;
     }
+
+    public boolean noBiggerThan(Payment payment) {
+        return this.price <= payment.price;
+    }
 }

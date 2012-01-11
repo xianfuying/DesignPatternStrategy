@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 
 public class CinemaTest {
@@ -17,17 +18,19 @@ public class CinemaTest {
 
     @Test
     public void should_support_basic_strategy() {
-        strategy = new BasicStrategy();
+        strategy = new MemberStrategy();
         cinema.support(strategy);
 
         assertThat(cinema.getStrategies().contains(strategy), is(true));
     }
 
     @Test
-    public void should_get_payment_with_100_dollar_using_cash_of_two_tickets() {
-        strategy = new BasicStrategy();
-        cinema.support(strategy);
+    public void should_set_basic_strategy_as_default_strategy(){
+        assertThat(cinema.getDefaultStrategy(), is(instanceOf(BasicStrategy.class)));
+    }
 
+    @Test
+    public void should_get_payment_with_100_dollar_using_cash_of_two_tickets() {
         Payment payment = cinema.buy(2);
 
         assertThat(payment.toString(), is("Method: Cash\nTotal price: 100"));
@@ -81,5 +84,17 @@ public class CinemaTest {
         Payment payment = cinema.buy(4);
 
         assertThat(payment.toString(), is("Method: Member Card\nTotal price: 150"));
+    }
+
+    @Test
+    public void should_get_lowest_payment_given_member_strategy_and_CMBC_strategy() {
+        MemberStrategy memberStrategy = new MemberStrategy();
+        CMBCStrategy cmbcStrategy = new CMBCStrategy();
+        cinema.support(cmbcStrategy);
+        cinema.support(memberStrategy);
+
+        Payment payment = cinema.buy(3);
+
+        assertThat(payment.toString(), is("Method: Credit Card\nTotal price: 75"));
     }
 }
