@@ -1,8 +1,7 @@
 package com.movie;
 
+import org.junit.Before;
 import org.junit.Test;
-
-import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -11,73 +10,76 @@ public class CinemaTest {
     private Cinema cinema;
     private Strategy strategy;
 
+    @Before
+    public void setUp() {
+        cinema = new Cinema();
+    }
+
     @Test
-    public void should_get_one_ticket_when_given_50_dollar() {
+    public void should_support_basic_strategy() {
         strategy = new BasicStrategy();
-        cinema = new Cinema(strategy);
+        cinema.support(strategy);
 
-        List<MovieTicket> movieTickets = cinema.buy(50);
-
-        assertThat(movieTickets.size(), is(1));
+        assertThat(cinema.getStrategies().contains(strategy), is(true));
     }
 
     @Test
-    public void should_get_two_tickets_when_given_100_dollar() {
+    public void should_get_payment_with_100_dollar_using_cash_of_two_tickets() {
         strategy = new BasicStrategy();
-        cinema = new Cinema(strategy);
+        cinema.support(strategy);
 
-        List<MovieTicket> movieTickets = cinema.buy(100);
+        Payment payment = cinema.buy(2);
 
-        assertThat(movieTickets.size(), is(2));
+        assertThat(payment.toString(), is("Method: Cash\nTotal price: 100"));
     }
 
     @Test
-    public void should_get_one_ticket_when_given_25_dollar() {
-        strategy = new TuesdayStrategy();
-        cinema = new Cinema(strategy);
-
-        List<MovieTicket> movieTickets = cinema.buy(25);
-
-        assertThat(movieTickets.size(), is(1));
-    }
-
-    @Test
-    public void should_get_two_tickets_when_given_50_dollar() {
-        strategy = new TuesdayStrategy();
-        cinema = new Cinema(strategy);
-
-        List<MovieTicket> movieTickets = cinema.buy(50);
-
-        assertThat(movieTickets.size(), is(2));
-    }
-
-    @Test
-    public void should_get_two_tickets_when_given_50_dollar_using_CMBC() {
+    public void should_get_payment_with_100_dollar_using_cash_credit_card_of_two_tickets() {
         strategy = new CMBCStrategy();
-        cinema = new Cinema(strategy);
+        cinema.support(strategy);
 
-        List<MovieTicket> movieTickets = cinema.buy(50);
+        Payment payment = cinema.buy(2);
 
-        assertThat(movieTickets.size(), is(2));
+        assertThat(payment.toString(), is("Method: Credit Card\nTotal price: 50"));
     }
 
     @Test
-    public void should_get_three_tickets_when_given_100_dollar_as_member() {
-        strategy = new MemberStrategy();
-        cinema = new Cinema(strategy);
+    public void should_get_payment_with_50_dollar_of_two_tickets() {
+        strategy = new TuesdayStrategy();
+        cinema.support(strategy);
 
-        List<MovieTicket> movieTickets = cinema.buy(100);
+        Payment payment = cinema.buy(2);
 
-        assertThat(movieTickets.size(), is(3));
+        assertThat(payment.toString(), is("Method: Cash\nTotal price: 50"));
     }
 
     @Test
-    public void should_get_four_tickets_when_given_150_dollar_as_member() {
+    public void should_get_payment_with_100_dollar_using_member_card_of_three_tickets() {
         strategy = new MemberStrategy();
-        cinema = new Cinema(strategy);
+        cinema.support(strategy);
 
-        List<MovieTicket> movieTickets = cinema.buy(150);
+        Payment payment = cinema.buy(3);
 
-        assertThat(movieTickets.size(), is(4));
+        assertThat(payment.toString(), is("Method: Member Card\nTotal price: 100"));
+    }
+
+    @Test
+    public void should_get_payment_with_100_dollar_using_member_card_of_two_tickets(){
+        strategy = new MemberStrategy();
+        cinema.support(strategy);
+
+        Payment payment = cinema.buy(2);
+
+        assertThat(payment.toString(), is("Method: Member Card\nTotal price: 100"));
+    }
+
+    @Test
+    public void should_get_payment_with_150_dollar_using_member_card_of_four_tickets(){
+        strategy = new MemberStrategy();
+        cinema.support(strategy);
+
+        Payment payment = cinema.buy(4);
+
+        assertThat(payment.toString(), is("Method: Member Card\nTotal price: 150"));
     }
 }

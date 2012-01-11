@@ -1,12 +1,13 @@
 package com.movie;
 
-import java.util.List;
-
 public class BasicStrategy implements Strategy{
 
     private static final int PRICE = 50;
 
-    public List<MovieTicket> buy(double money) {
-        return TicketCreator.getTickets(money / PRICE);
+    public Payment buy(int ticketCount) {
+        Payment payment = new Payment();
+        payment.setMethod("Cash");
+        payment.setPrice(ticketCount * PRICE);
+        return payment;
     }
 }
