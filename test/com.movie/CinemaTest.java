@@ -97,4 +97,14 @@ public class CinemaTest {
 
         assertThat(payment.toString(), is("Method: Credit Card\nTotal price: 75"));
     }
+
+    @Test
+    public void should_get_payment_with_40_dollar_using_coupon_of_two_tickets() {
+        strategy = new CouponStrategy();
+        cinema.support(strategy);
+
+        Payment payment = cinema.getPayment(2);
+
+        assertThat(payment.toString(), is("Method: Coupon\nTotal price: 40"));
+    }
 }
