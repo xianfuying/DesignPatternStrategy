@@ -31,7 +31,7 @@ public class CinemaTest {
 
     @Test
     public void should_get_payment_with_100_dollar_using_cash_of_two_tickets() {
-        Payment payment = cinema.buy(2);
+        Payment payment = cinema.getPayment(2);
 
         assertThat(payment.toString(), is("Method: Cash\nTotal price: 100"));
     }
@@ -41,7 +41,7 @@ public class CinemaTest {
         strategy = new CMBCStrategy();
         cinema.support(strategy);
 
-        Payment payment = cinema.buy(2);
+        Payment payment = cinema.getPayment(2);
 
         assertThat(payment.toString(), is("Method: Credit Card\nTotal price: 50"));
     }
@@ -51,7 +51,7 @@ public class CinemaTest {
         strategy = new TuesdayStrategy();
         cinema.support(strategy);
 
-        Payment payment = cinema.buy(2);
+        Payment payment = cinema.getPayment(2);
 
         assertThat(payment.toString(), is("Method: Cash\nTotal price: 50"));
     }
@@ -61,7 +61,7 @@ public class CinemaTest {
         strategy = new MemberStrategy();
         cinema.support(strategy);
 
-        Payment payment = cinema.buy(3);
+        Payment payment = cinema.getPayment(3);
 
         assertThat(payment.toString(), is("Method: Member Card\nTotal price: 100"));
     }
@@ -71,7 +71,7 @@ public class CinemaTest {
         strategy = new MemberStrategy();
         cinema.support(strategy);
 
-        Payment payment = cinema.buy(2);
+        Payment payment = cinema.getPayment(2);
 
         assertThat(payment.toString(), is("Method: Member Card\nTotal price: 100"));
     }
@@ -81,7 +81,7 @@ public class CinemaTest {
         strategy = new MemberStrategy();
         cinema.support(strategy);
 
-        Payment payment = cinema.buy(4);
+        Payment payment = cinema.getPayment(4);
 
         assertThat(payment.toString(), is("Method: Member Card\nTotal price: 150"));
     }
@@ -93,7 +93,7 @@ public class CinemaTest {
         cinema.support(cmbcStrategy);
         cinema.support(memberStrategy);
 
-        Payment payment = cinema.buy(3);
+        Payment payment = cinema.getPayment(3);
 
         assertThat(payment.toString(), is("Method: Credit Card\nTotal price: 75"));
     }

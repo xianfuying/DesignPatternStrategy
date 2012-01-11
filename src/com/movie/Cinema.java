@@ -12,7 +12,7 @@ public class Cinema {
         defaultStrategy = new BasicStrategy();
     }
 
-    public Payment buy(int ticketCount) {
+    public Payment getPayment(int ticketCount) {
         if (strategies.isEmpty()) {
             return getDefaultPayment(ticketCount);
         }
@@ -22,13 +22,13 @@ public class Cinema {
     }
 
     private Payment getDefaultPayment(int ticketCount) {
-        return defaultStrategy.buy(ticketCount);
+        return defaultStrategy.getPayment(ticketCount);
     }
 
     private Payment getLowestPayment(int ticketCount) {
         Payment payment = getDefaultPayment(ticketCount);
         for (Strategy strategy : strategies) {
-            payment = getLowerPayment(payment, strategy.buy(ticketCount));
+            payment = getLowerPayment(payment, strategy.getPayment(ticketCount));
         }
         return payment;
     }
