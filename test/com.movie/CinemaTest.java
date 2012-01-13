@@ -21,17 +21,17 @@ public class CinemaTest {
         strategy = new MemberStrategy();
         cinema.support(strategy);
 
-        assertThat(cinema.getStrategies().contains(strategy), is(true));
+        assertThat(cinema.hasStrategy(strategy), is(true));
     }
 
     @Test
     public void should_set_basic_strategy_as_default_strategy(){
-        assertThat(cinema.getDefaultStrategy(), is(instanceOf(BasicStrategy.class)));
+        assertThat(cinema.getDefaultStrategy(), is(instanceOf(CashStrategy.class)));
     }
 
     @Test
     public void should_get_payment_with_100_dollar_using_cash_of_two_tickets() {
-        Payment payment = cinema.getPayment(2);
+        Payment payment = cinema.askForPrice(2);
 
         assertThat(payment.toString(), is("Method: Cash\nTotal price: 100"));
     }
@@ -41,7 +41,7 @@ public class CinemaTest {
         strategy = new CMBCStrategy();
         cinema.support(strategy);
 
-        Payment payment = cinema.getPayment(2);
+        Payment payment = cinema.askForPrice(2);
 
         assertThat(payment.toString(), is("Method: Credit Card\nTotal price: 50"));
     }
@@ -51,7 +51,7 @@ public class CinemaTest {
         strategy = new TuesdayStrategy();
         cinema.support(strategy);
 
-        Payment payment = cinema.getPayment(2);
+        Payment payment = cinema.askForPrice(2);
 
         assertThat(payment.toString(), is("Method: Cash\nTotal price: 50"));
     }
@@ -61,7 +61,7 @@ public class CinemaTest {
         strategy = new MemberStrategy();
         cinema.support(strategy);
 
-        Payment payment = cinema.getPayment(3);
+        Payment payment = cinema.askForPrice(3);
 
         assertThat(payment.toString(), is("Method: Member Card\nTotal price: 100"));
     }
@@ -71,7 +71,7 @@ public class CinemaTest {
         strategy = new MemberStrategy();
         cinema.support(strategy);
 
-        Payment payment = cinema.getPayment(2);
+        Payment payment = cinema.askForPrice(2);
 
         assertThat(payment.toString(), is("Method: Member Card\nTotal price: 100"));
     }
@@ -81,7 +81,7 @@ public class CinemaTest {
         strategy = new MemberStrategy();
         cinema.support(strategy);
 
-        Payment payment = cinema.getPayment(4);
+        Payment payment = cinema.askForPrice(4);
 
         assertThat(payment.toString(), is("Method: Member Card\nTotal price: 150"));
     }
@@ -90,10 +90,10 @@ public class CinemaTest {
     public void should_get_lowest_payment_given_member_strategy_and_CMBC_strategy() {
         MemberStrategy memberStrategy = new MemberStrategy();
         CMBCStrategy cmbcStrategy = new CMBCStrategy();
-        cinema.support(cmbcStrategy);
-        cinema.support(memberStrategy);
+        cinema.support(cmbcStrategy).support(memberStrategy);
 
-        Payment payment = cinema.getPayment(3);
+
+        Payment payment = cinema.askForPrice(3);
 
         assertThat(payment.toString(), is("Method: Credit Card\nTotal price: 75"));
     }
@@ -103,7 +103,7 @@ public class CinemaTest {
         strategy = new CouponStrategy();
         cinema.support(strategy);
 
-        Payment payment = cinema.getPayment(2);
+        Payment payment = cinema.askForPrice(2);
 
         assertThat(payment.toString(), is("Method: Coupon\nTotal price: 40"));
     }

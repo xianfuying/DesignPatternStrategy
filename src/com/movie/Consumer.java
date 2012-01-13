@@ -9,7 +9,7 @@ public class Consumer {
         cinema.support(memberStrategy);
         cinema.support(cmbcStrategy);
 
-        Payment payment = cinema.getPayment(5);
+        Payment payment = cinema.askForPrice(5);
 
         System.out.println(payment);
     }

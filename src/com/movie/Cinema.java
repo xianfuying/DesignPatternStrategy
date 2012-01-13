@@ -9,10 +9,10 @@ public class Cinema {
 
     public Cinema() {
         strategies = new ArrayList<Strategy>();
-        defaultStrategy = new BasicStrategy();
+        defaultStrategy = new CashStrategy();
     }
 
-    public Payment getPayment(int ticketCount) {
+    public Payment askForPrice(int ticketCount) {
         if (strategies.isEmpty()) {
             return getDefaultPayment(ticketCount);
         }
@@ -40,12 +40,17 @@ public class Cinema {
         return payment;
     }
 
-    public void support(Strategy strategy) {
+    public Cinema support(Strategy strategy) {
         strategies.add(strategy);
+        return this;
     }
 
     protected List<Strategy> getStrategies() {
         return strategies;
+    }
+
+    public boolean  hasStrategy(Strategy strategy) {
+        return this.getStrategies().contains(strategy);
     }
 
     protected Strategy getDefaultStrategy() {
